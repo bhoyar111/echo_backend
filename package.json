@@ -1,0 +1,37 @@
+{
+    "name": "backendnode",
+    "version": "1.0.0",
+    "description": "software forming\u001b[D\u001b[D\u001b[D\u001b[D\u001b[a\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon --exec babel-node app.js"
+    },
+    "keywords": [
+        "spikecade"
+    ],
+    "author": "akash bhoyar",
+    "license": "MIT",
+    "dependencies": {
+        "@hapi/joi": "^17.1.1",
+        "aes256": "^1.0.4",
+        "axios": "^0.20.0",
+        "babel-core": "^6.26.3",
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.19.2",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.0",
+        "express": "^4.17.3",
+        "jsonwebtoken": "^8.5.1",
+        "morgan": "^1.10.0",
+        "mysql2": "^2.3.3",
+        "nodemailer": "^6.7.2",
+        "nodemailer-smtp-transport": "^2.2.0",
+        "sequelize": "^6.16.2"
+    },
+    "devDependencies": {
+        "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+        "babel-plugin-transform-object-rest-spread": "^6.26.0",
+        "babel-preset-env": "^1.7.0"
+    }
+}

@@ -5,10 +5,9 @@ import {
     getValidationErrMsg,
     getIdNotFoundCommonMsg,
     getServerErrorMsg,
-    // getIdAssignedMsg
 } from '../custom/error-msg';
 
-import { getDecryptId, pageLimit } from '../custom/secure';
+import { getDecryptId, pageLimit, checkDataIsValid } from '../custom/secure';
 
 // models import here
 import model from '../db/models';
@@ -20,9 +19,22 @@ import validateUser from '../requests/userRequest';
 export default {
     async getUsers(req, res) {
         try {
-            let users = [];
-            users = await User.getList();
-            res.status(ok).send({ users });
+            const { pageNo } = req.query;
+            const page = checkDataIsValid(pageNo) ? pageNo : 1;
+            const pageSize = pageLimit();
+
+            let usersRes = [];
+            usersRes = await User.getList(page, pageSize);
+            const pages = Math.ceil(usersRes.count / pageSize);
+
+            const pageData = {
+                total_record : usersRes.count,
+                per_page     : pageSize,
+                current_page : page,
+                total_pages  : pages
+            }
+            const users = checkDataIsValid(usersRes.rows) ? usersRes.rows : [];
+            res.status(ok).send({ users, pageData });
         } catch (e) {
             console.log(e);
             res.status(server_error).send(e);
@@ -49,8 +61,8 @@ export default {
     async getUser(req, res) {
         try {
             const { id } = req.params;
-            // const decId = getDecryptId(id);
-            const recordExist = await User.getRecordById(id);
+            const decId = getDecryptId(id);
+            const recordExist = await User.getRecordById(decId);
             if (!recordExist) return res.status(bad_request).send({ message: getIdNotFoundCommonMsg('user') });
             const roles = await Role.getDS();
             res.status(ok).send({ user: recordExist, roles });

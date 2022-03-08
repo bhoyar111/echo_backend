@@ -104,12 +104,16 @@ export default (sequelize, DataTypes) => {
 		}
 	}
 
-	User.getList = async () => {
+	User.getList = async (curPage, pgSize) => {
 		try {
-			return await User.findAll({
+			return await User.findAndCountAll({
 				where:{
 					status: true
 				},
+				distinct: true,
+                order: [['first_name', 'ASC']],
+                offset: (curPage-1)*pgSize,
+				limit: pgSize,
 				attributes: [
 					'id','first_name','middle_name','last_name','email_id','mobile_no','password',
 					'profile_img','role_id'
